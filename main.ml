@@ -1,6 +1,6 @@
 (*VADE GRELET Lucas
   SIBE Adam*)
-open list;;
+open list;; (*test*)
 (*--- partie1 ---*)
 #use "./partie1/partie1.ml";;
 (* init tout les fuites de donn�e *) (*20sec environ*)
