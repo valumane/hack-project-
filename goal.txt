@@ -1,0 +1,5 @@
+genre si je rentre un login sa me donne 
+
+
+site        | login     | mot de passe haché | mot de passe decodé
+depensetout | "bernard" | "xsqfqsdf="        | "azerty"
