@@ -85,5 +85,5 @@ let init_sheet ():(string * string) list *
   (* Retourne un tuple contenant toutes les bases de donn es *)
   (depensetout, slogram, tetedamis, depensetouthache);;
 
-let (depensetout,slogram,tetedamis,depensetouthache) = init_sheet();;
-time_eval(init_sheet,());;
+(*let (depensetout,slogram,tetedamis,depensetouthache) = init_sheet();;
+time_eval(init_sheet,());;*)
