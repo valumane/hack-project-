@@ -1,36 +1,37 @@
-(*VADE GRELET Lucas
-  SIBE Adam*)
-
 #use "././outils/tools.ml";;
 
 (*db = fuite de donnee = Data Base = db*)
 
-(*----------------*)
-(* premier partie *)
-(*----------------*)
-
-(*check si une db est vide *)
-let db_isempty(db : 'a list) : bool= 
-  db=[]
+(* Insère un élément dans une liste triée *)
+let rec insert_sorted x lst =
+  if List.length lst = 0 then [x]
+  else if fst x <= fst (List.hd lst) then x :: lst
+  else (List.hd lst) :: (insert_sorted x (List.tl lst))
 ;;
 
-let rec is_element_in_db (e, db : 'a * 'a list) : bool =
-  if db = [] || List.hd db = e
-  then db <> []
-  else is_element_in_db (e, List.tl db)
+(* Tri une liste par insertion *)
+let rec insertion_sort lst =
+  if List.length lst = 0 then []
+  else insert_sorted (List.hd lst) (insertion_sort (List.tl lst))
 ;;
 
-(* supprime les doublons d'une liste*)
-let unique_list(lst:'a list):'a list=
-  let rec aux(acc,lst:'a list*'a list):'a list=
-  if lst = []
-  then acc
-  else
-    if is_element_in_db(List.hd lst,acc)
-    then aux(acc,List.tl lst)
-    else aux(List.hd lst :: acc, List.tl lst)
+(*remove les doublons*)
+let remove_duplicate (lst : (string * string) list) : (string * string) list =
+  let acc = ref [] in
+  let rec check_duplicate (acc_lst : (string * string) list) (s : string) : bool =
+    if List.length acc_lst = 0 then false
+    else if String.get (fst (List.hd acc_lst)) 0 = String.get s 0 then true
+    else check_duplicate (List.tl acc_lst) s
   in
-  rev(aux([],lst))
+  let rec add_unique lst =
+    if List.length lst = 0 then ()
+    else
+      let s, v = List.hd lst in
+      if not (check_duplicate !acc s) then acc := (s, v) :: !acc;
+      add_unique (List.tl lst)
+  in
+  add_unique lst;
+  !acc
 ;;
 
 (* merge deux listes*)
@@ -43,9 +44,9 @@ let rec merge(db2,db1: 'a list * 'a list):'a list=
 
 (* merge et supprime les doublons de 2listes*)
 let merge_two_list_no_duplicates(db1,db2:'a list*'a list):'a list=
-  if db_isempty(db1) || db_isempty(db2)
+  if db1=[] || db2=[]
   then failwith "erreur merge_no_duplicates : db1 ou db2 vide"
-  else unique_list(  merge(db1,db2)  )
+  else remove_duplicate(  merge(db1,db2)  )
 ;;
 
 
@@ -58,7 +59,7 @@ let hache_db (db : ('a * string) list) : ('a * string) list =
     let (login, password) = List.nth db i in
     result := (login, hash_password password) :: !result
   done;
-  rev(!result)
+  List.rev !result
 ;;
 
 (* initialise toute les bd *)
@@ -85,11 +86,9 @@ let init_sheet ():(string * string) list *
   let depensetouthache = hache_db(depensetout) in
   
   (* Retourne un tuple contenant toutes les bases de donn es *)
-  (depensetout, slogram, tetedamis, depensetouthache)
-;;
+  (depensetout, slogram, tetedamis, depensetouthache);;
 
-(*let (depensetout,slogram,tetedamis,depensetouthache) = init_sheet();;*)
-
+let (depensetout,slogram,tetedamis,depensetouthache) = init_sheet();;
 
 (* AUUUU SECOURS ECRITURE FONCTIONNELLLLE AAAAAAAAAAAAAH*)
 let format_fuite () : string * string -> string =
