@@ -3,28 +3,27 @@
 (*db = fuite de donnee = Data Base = db*)
 
 (* Insère un élément dans une liste triée *)
-let rec insert_sorted x lst =
-  if List.length lst = 0 then [x]
-  else if fst x <= fst (List.hd lst) then x :: lst
-  else (List.hd lst) :: (insert_sorted x (List.tl lst))
+
+let rec quicksort (lst : (string * string) list) : (string * string) list =
+  match lst with
+  | [] -> []
+  | (x, y) :: rest ->
+      let smaller_or_equal = List.filter (fun (a, _) -> a <= x) rest in
+      let greater = List.filter (fun (a, _) -> a > x) rest in
+      quicksort smaller_or_equal @ [(x, y)] @ quicksort greater
 ;;
 
-(* Tri une liste par insertion *)
-let rec insertion_sort lst =
-  if List.length lst = 0 then []
-  else insert_sorted (List.hd lst) (insertion_sort (List.tl lst))
-;;
 
 (*remove les doublons*)
 let remove_duplicate (lst : (string * string) list) : (string * string) list =
   let acc = ref [] in
   let rec check_duplicate (acc_lst : (string * string) list) (s : string) : bool =
-    if List.length acc_lst = 0 then false
-    else if String.get (fst (List.hd acc_lst)) 0 = String.get s 0 then true
+    if acc_lst = [] then false
+    else if fst (List.hd acc_lst) = s then true
     else check_duplicate (List.tl acc_lst) s
   in
   let rec add_unique lst =
-    if List.length lst = 0 then ()
+    if lst = [] then ()
     else
       let s, v = List.hd lst in
       if not (check_duplicate !acc s) then acc := (s, v) :: !acc;
@@ -46,10 +45,8 @@ let rec merge(db2,db1: 'a list * 'a list):'a list=
 let merge_two_list_no_duplicates(db1,db2:'a list*'a list):'a list=
   if db1=[] || db2=[]
   then failwith "erreur merge_no_duplicates : db1 ou db2 vide"
-  else remove_duplicate(  merge(db1,db2)  )
+  else remove_duplicate( List.rev(quicksort( merge(db1,db2) )) )
 ;;
-
-
 
 (*fonction pour hache une db*)
 let hache_db (db : ('a * string) list) : ('a * string) list =
@@ -89,8 +86,4 @@ let init_sheet ():(string * string) list *
   (depensetout, slogram, tetedamis, depensetouthache);;
 
 let (depensetout,slogram,tetedamis,depensetouthache) = init_sheet();;
-
-(* AUUUU SECOURS ECRITURE FONCTIONNELLLLE AAAAAAAAAAAAAH*)
-let format_fuite () : string * string -> string =
-  (fun (login, pwd) -> Printf.sprintf "(%s,%s)" login pwd)
-;;
+time_eval(init_sheet,());;
