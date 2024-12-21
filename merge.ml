@@ -2,8 +2,6 @@
 
 (*db = fuite de donnee = Data Base = db*)
 
-(* Insère un élément dans une liste triée *)
-
 let rec quicksort (lst : (string * string) list) : (string * string) list =
   match lst with
   | [] -> []
@@ -15,23 +13,18 @@ let rec quicksort (lst : (string * string) list) : (string * string) list =
 
 
 (*remove les doublons*)
-let remove_duplicate (lst : (string * string) list) : (string * string) list =
-  let acc = ref [] in
-  let rec check_duplicate (acc_lst : (string * string) list) (s : string) : bool =
-    if acc_lst = [] then false
-    else if fst (List.hd acc_lst) = s then true
-    else check_duplicate (List.tl acc_lst) s
+let remove_duplicates lst =
+  let sorted = quicksort lst in
+  let rec aux acc = function
+    | [] -> List.rev acc
+    | [x] -> List.rev (x :: acc) (* Ajoute le dernier élément *)
+    | x :: (y :: _ as rest) ->
+        if x = y then aux acc rest
+        else aux (x :: acc) rest
   in
-  let rec add_unique lst =
-    if lst = [] then ()
-    else
-      let s, v = List.hd lst in
-      if not (check_duplicate !acc s) then acc := (s, v) :: !acc;
-      add_unique (List.tl lst)
-  in
-  add_unique lst;
-  !acc
+  aux [] sorted
 ;;
+
 
 (* merge deux listes*)
 let rec merge(db2,db1: 'a list * 'a list):'a list=
@@ -45,8 +38,9 @@ let rec merge(db2,db1: 'a list * 'a list):'a list=
 let merge_two_list_no_duplicates(db1,db2:'a list*'a list):'a list=
   if db1=[] || db2=[]
   then failwith "erreur merge_no_duplicates : db1 ou db2 vide"
-  else remove_duplicate( List.rev(quicksort( merge(db1,db2) )) )
+  else remove_duplicates(merge(db1,db2))
 ;;
+
 
 (*fonction pour hache une db*)
 let hache_db (db : ('a * string) list) : ('a * string) list =
@@ -59,11 +53,14 @@ let hache_db (db : ('a * string) list) : ('a * string) list =
   List.rev !result
 ;;
 
+
+let format_fuite () : string * string -> string =
+  (fun (login, pwd) -> Printf.sprintf "(%s,%s)" login pwd)
+;;
+
+
 (* initialise toute les bd *)
-let init_sheet ():(string * string) list *
-                  (string * string) list *
-                  (string * string) list *
-                  (string * string) list =
+let init_sheet ()=
   (* Lecture des fichiers individuels *)
   let depensetout01 = read_data_from_file "./fuite/depensetout01.txt" and
       depensetout02 = read_data_from_file "./fuite/depensetout02.txt" in 
@@ -83,7 +80,16 @@ let init_sheet ():(string * string) list *
   let depensetouthache = hache_db(depensetout) in
   
   (* Retourne un tuple contenant toutes les bases de donn es *)
-  (depensetout, slogram, tetedamis, depensetouthache);;
+  (depensetout, slogram, tetedamis, depensetouthache)
 
+;;
 let (depensetout,slogram,tetedamis,depensetouthache) = init_sheet();;
+
 time_eval(init_sheet,());;
+let writemerge(depensetout,slogram,tetedamis)=
+  write_list_to_file_generic("depensetout.txt", depensetout ,format_fuite());
+  write_list_to_file_generic("slogram.txt", slogram ,format_fuite());
+  write_list_to_file_generic("tetedamis.txt", tetedamis ,format_fuite());
+;;
+
+
