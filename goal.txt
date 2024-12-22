@@ -1,5 +1,8 @@
-genre si je rentre un login sa me donne 
-
+une interface graphique qui me donne le resultat ci desous quand je rentre un login
 
 site        | login     | mot de passe haché | mot de passe decodé
 depensetout | "bernard" | "xsqfqsdf="        | "azerty"
+
+une recherche par mdp clair et haché possible aussi
+et le nombre de login present n fois dans une ou plusieurs fuite
+
