@@ -40,20 +40,27 @@ let print_all_info_of_login(login,db,indb)=
     acc := res :: !acc 
   done;
     if !acc = []
-    then (acc := [["";login;"";""]]);
+    then (acc := [[indb;login;
+    "             login non trouver              ";
+    "         "]]);
 
   !acc
 ;;
 print_all_info_of_login("5",slogram,"slogram");;
 
 let print_result_by_login(login)=
-  let a = print_all_info_of_login(login, depensetout, "depensetout") in
-  let b = print_all_info_of_login(login, slogram, "slogram") in
-  let c = print_all_info_of_login(login, tetedamis, "tetedamis") in
+  let a = print_all_info_of_login(login, depensetout, " depensetout") in
+  let b = print_all_info_of_login(login, slogram, "   slogram  ") in
+  let c = print_all_info_of_login(login, tetedamis, "  tetedamis ") in
   
   let list = a@b@c in
 
-  let res = Array.make (List.length list +1) ["site"; "login"; "mdp clair"; "mdp decode"] in
+  let res = Array.make 
+            (List.length list +1) 
+            ["     site    | "; 
+             "  login  | "; 
+             "                  mdp coder                  | "; 
+             "mdp decode|"] in
   
   let rec listToTab(lst, i)=
     if lst = [] 
@@ -68,5 +75,4 @@ let print_result_by_login(login)=
   listToTab(list, 1);
   res
 ;;
-
-print_result_by_login("dsollong");;
+draw( print_result_by_login("nnorcamm") );;
