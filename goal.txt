@@ -3,3 +3,8 @@ genre si je rentre un login sa me donne
 
 site        | login     | mot de passe haché | mot de passe decodé
 depensetout | "bernard" | "xsqfqsdf="        | "azerty"
+
+(* adapté les colonnes *)
+(* faire bouton prev suiv pour prev ou suiv login *)
+(* zone d'ecriture login a cherche *)
+(* si login pas present -> affichage *)
