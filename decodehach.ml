@@ -39,9 +39,12 @@ let print_all_info_of_login(login,db,indb)=
     let res = [a; b; c; decodeMdp(c,hashmdpclair,mdpclair)] in
     acc := res :: !acc 
   done;
+    if !acc = []
+    then (acc := [["";login;"";""]]);
 
   !acc
 ;;
+print_all_info_of_login("5",slogram,"slogram");;
 
 let print_result_by_login(login)=
   let a = print_all_info_of_login(login, depensetout, "depensetout") in
