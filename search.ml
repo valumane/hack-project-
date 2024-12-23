@@ -24,8 +24,3 @@ let find_info_by_login_in_db(login,db,namedb)=
   in
   aux([],indb)
 ;;
-
-find_info_by_login_in_db("wponfel4",depensetout,"depensetout");;
-find_info_by_login_in_db("wponfel4",slogram,"slogram");;
-find_info_by_login_in_db("wponfel4",tetedamis,"tetedamis");;
-
