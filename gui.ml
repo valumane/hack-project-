@@ -1,8 +1,4 @@
 #use "decodehach.ml";;
-
-#require "graphics";;
-open Graphics;;
-
 open_graph("800x600");;
 
 clear_graph();;

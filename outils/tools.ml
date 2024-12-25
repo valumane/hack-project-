@@ -4,7 +4,8 @@
 #use "topfind";;
 #require "cryptokit";;
 #require "base64";;
-
+#require "graphics";;
+open Graphics;;
 
 
 let read_data_from_file file =
