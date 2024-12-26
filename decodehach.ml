@@ -46,7 +46,6 @@ let print_all_info_of_login(login,db,indb)=
 
   !acc
 ;;
-print_all_info_of_login("5",slogram,"slogram");;
 
 let print_result_by_login(login)=
   let a = print_all_info_of_login(login, depensetout, " depensetout") in
@@ -57,10 +56,10 @@ let print_result_by_login(login)=
 
   let res = Array.make 
             (List.length list +1) 
-            ["     site    | "; 
-             "  login  | "; 
-             "                  mdp coder                  | "; 
-             "mdp decode|"] in
+            ["site"; 
+             "login"; 
+             "mdp coder"; 
+             "mdp decode"] in
   
   let rec listToTab(lst, i)=
     if lst = [] 
@@ -75,4 +74,3 @@ let print_result_by_login(login)=
   listToTab(list, 1);
   res
 ;;
-draw( print_result_by_login("nnorcamm") );;
