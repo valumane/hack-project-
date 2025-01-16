@@ -1,5 +1,6 @@
-#use "decodehach.ml";;
-open_graph("800x600");;
+#use "search_login.ml";;
+
+open_graph("1000x600");;
 
 let find_longest_string_of_nth_collumn(t,n)=
   let len : int ref = ref 0 in
@@ -71,5 +72,24 @@ let draw(t)=
     moveto 5 !y
   done;
 ;;
-draw(print_result_by_login("mmarvalo"));;
+draw(print_result_by_login( List.nth list_of_login 6));;
 clear_graph();;
+
+let tmp : int ref = ref 0 ;;
+
+let next()=
+  tmp := !tmp + 1;
+  draw(print_result_by_login( List.nth list_of_login !tmp) )
+;;
+
+let previous()=
+  tmp := !tmp -1;
+  draw(print_result_by_login( List.nth list_of_login !tmp) )
+;;
+
+
+next();;
+previous();;
+
+
+
